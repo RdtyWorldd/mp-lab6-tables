@@ -12,13 +12,13 @@ protected:
         Key key;
         Value val;
     };
-
+    
     int el_count;
     int eff;
 public:
     Table();
-    virtual Table& operator= (const Table&) =0;
-    virtual ~Table() =0;
+    //virtual Table& operator= (const Table&) =0;
+    virtual ~Table();
 
     int get_el_count();
     int get_eff();
@@ -34,7 +34,7 @@ public:
     virtual bool is_end() =0;
 
     virtual Key get_curr_key() = 0;
-    virtual Value get_cuur_val() = 0;
+    virtual Value get_curr_val() = 0;
 
     friend std::ostream& operator<<(std::ostream& os, const Table& t)
     {
@@ -69,4 +69,9 @@ template <typename Key, typename Value>
 inline bool Table<Key, Value>::is_empty()
 {
     return el_count == 0;
+}
+
+template <typename Key, typename Value>
+inline Table<Key, Value>::~Table()
+{
 }
