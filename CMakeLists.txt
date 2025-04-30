@@ -1,18 +1,19 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.10)
 
 set(PROJECT_NAME tables)
+project(${PROJECT_NAME})
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "") #${CMAKE_BINARY_DIR}/lib
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin)
 
 set(CMAKE_CXX_COMPILER /usr/bin/g++)
-
+set(CMAKE_BUILD_TYPE Debug)
 set(PROJECT_LIB ${PROJECT_NAME})
 set(PROJECT_TESTS test_${PROJECT_NAME})
 set(PROJECT_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 include_directories(${PROJECT_INCLUDE})
 
-#sadd_subdirectory(src)
+#add_subdirectory(src)
 add_subdirectory(samples)
