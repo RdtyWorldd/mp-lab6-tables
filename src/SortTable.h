@@ -18,7 +18,7 @@ public:
     SortTable(const SortTable& table);
     SortTable(const ScanTable<Key, Value>& table);
 
-    SortTable& operator= (const SortTable& table);
+    SortTable<Key, Value>& operator= (const SortTable<Key, Value>& table);
 
     virtual bool find(Key key);
     virtual bool insert(Key key, Value value);
@@ -172,13 +172,11 @@ inline SortTable<Key, Value>::SortTable(int _size) : ScanTable<Key, Value>(_size
 
 template <typename Key, typename Value>
 inline SortTable<Key, Value>::SortTable(const SortTable& table) : ScanTable<Key, Value>(table) {
-    std::cout<< "sort table\n";
 }
 
 template<typename Key, typename Value>
 inline SortTable<Key, Value>::SortTable(const ScanTable<Key, Value>& table): ScanTable<Key, Value>(table) {
     sort(1);
-    std::cout<< "sort table\n";
 }
 
 template <typename Key, typename Value>
@@ -240,7 +238,7 @@ inline bool SortTable<Key, Value>::insert(Key key, Value value)
 template <typename Key, typename Value>
 inline void SortTable<Key, Value>::del(Key key)
 {
-    if(!find(key))
+    if(find(key))
     {
         for(int i = this->curr; i < this->el_count - 1; i++)
         {
@@ -249,4 +247,11 @@ inline void SortTable<Key, Value>::del(Key key)
         }
         this->el_count--;
     }
+}
+
+template <typename Key, typename Value>
+inline SortTable<Key, Value> &SortTable<Key, Value>::operator=(const SortTable<Key, Value> &table)
+{
+    ArrayTable<Key, Value>::operator=(table);
+    return *this;
 }

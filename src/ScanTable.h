@@ -11,7 +11,6 @@ public:
     ScanTable(int _size = 10);
     ScanTable(const ScanTable& table);
     ScanTable<Key, Value>& operator= (const ScanTable& table);
-    //~ScanTable();
     
 //cuur ставится на то место где назодится элемент, если его не нашли , то ставит curr в то место куда ее можно было бы добавить
     virtual bool find(Key key); 
@@ -23,19 +22,14 @@ template <typename Key, typename Value>
 inline ScanTable<Key, Value>::ScanTable(int _size): ArrayTable<Key, Value>(_size) {}
 
 template <typename Key, typename Value>
-inline ScanTable<Key, Value>::ScanTable(const ScanTable &table): ArrayTable<Key, Value>(table) {}
+inline ScanTable<Key, Value>::ScanTable(const ScanTable &table): ArrayTable<Key, Value>(table) { }
 
 template <typename Key, typename Value>
 inline ScanTable<Key, Value> &ScanTable<Key, Value>::operator=(const ScanTable &table)
 {
-    return ArrayTable<Key, Value>::operator= (table);    
+    ArrayTable<Key, Value>::operator= (table);    
+    return *this;
 }
-
-// template <typename Key, typename Value>
-// inline ScanTable<Key, Value>::~ScanTable()
-// {
-//     ArrayTable<Key, Value>::~ArrayTable();
-// }
 
 template <typename Key, typename Value>
 inline bool ScanTable<Key, Value>::find(Key key)
@@ -57,11 +51,15 @@ inline bool ScanTable<Key, Value>::find(Key key)
 template <typename Key, typename Value>
 inline bool ScanTable<Key, Value>::insert(Key key, Value value)
 {
+    if(this->el_count == this->arr_size)
+    {
+        return false;
+    }
+    
     if(find(key))
     {
         return false;
     }
-
     Record rec = {key, value};
     // rec.key = key;
     // rec.val = value; 

@@ -49,18 +49,8 @@ inline ArrayTable<Key, Value>::ArrayTable(int _size) : Table<Key, Value>()
 template <typename Key, typename Value>
 inline ArrayTable<Key, Value>::ArrayTable(const ArrayTable &table)
 {
-    if(this->arr_size != table.arr_size)
-    {   
-        Record* tmp = this->pRec;
-        try {
-            this->pRec = new Record[table.arr_size];
-        } catch(std::exception e) {
-            this->pRec = tmp;
-            return;
-        }
-        delete[] tmp;
-    }
     this->arr_size = table.arr_size;
+    this->pRec = new Record[table.arr_size];
     this->el_count = table.el_count;
     this->curr = table.curr;
     for(int i = 0; i < this->el_count; i++)
@@ -117,4 +107,5 @@ inline ArrayTable<Key, Value> &ArrayTable<Key, Value>::operator=(const ArrayTabl
         this->pRec[i] = table.pRec[i];
     }
     this->el_count = table.el_count;
+    return *this;
 }
