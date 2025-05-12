@@ -15,12 +15,13 @@ template <typename Key, typename Value>
 inline int HashTable<Key, Value>::hash_fuction(Key key)
 {
     int res = 0;
-    char* p = &key;
+    char* p = (char*) &key;
     for(int i = 0 ; i < sizeof(Key); i++)
     {
-        res = res +  (*p)
+        res = res + (*p);
         ++p;
     }
+    res = res % size;
     return res;
 }
 

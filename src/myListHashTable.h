@@ -43,6 +43,7 @@ template <typename Key, typename Value>
 inline ListHashTable<Key, Value>::ListHashTable(const ListHashTable &table): HashTable<Key, Value>(table.size)
 {
     this->pRec = new List<Record> [this->size];
+    this->el_count = table.el_count;
     for(int i =0; i < this->size; i++)
     {
         //copy  i list object from table to this
@@ -62,6 +63,7 @@ inline ListHashTable<Key, Value> &ListHashTable<Key, Value>::operator=(const Lis
         }
 
         this->size = table.size;
+        this->el_count = table.el_count;
         for(int i = 0; i < this->size; i++)
         {
             this->pRec[i] = table.pRec[i];

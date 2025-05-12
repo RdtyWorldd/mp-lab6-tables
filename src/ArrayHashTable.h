@@ -76,7 +76,7 @@ inline bool ArrayHashTable<Key, Value>::find(Key key)
 template <typename Key, typename Value>
 inline bool ArrayHashTable<Key, Value>::insert(Key key, Value val)
 {
-    if(!find(key))
+    if(!find(key) && !is_full)
     {
         this->el_count++;
         pRec[curr] = {key, val};

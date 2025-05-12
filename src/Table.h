@@ -40,7 +40,7 @@ public:
     {
       for (t.reset(); !t.is_end(); t.go_next())
       {
-        os << t.GetCurr() << std::endl;
+        os << t.get_curr_key() << " " << t.get_curr_val() << std::endl;
       }
       return os;
     }
