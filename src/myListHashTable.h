@@ -92,6 +92,7 @@ inline bool ListHashTable<Key, Value>::find(Key key)
 
     for(iter_list.Reset(); !iter_list.IsEnd(); iter_list.GoNext())
     {
+        (this->eff)++;
         if(iter_list.getCurr().key == key)
         {
             return true;
