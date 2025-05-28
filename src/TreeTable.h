@@ -16,12 +16,15 @@ class TreeTable : public Table<Key, Value>
     TreeNode* curr;
     TreeNode* prev;
 
-    size_t pos = 0; //количество просмотренных элементов
+    size_t level;
+    size_t pos; //количество просмотренных элементов
     std::stack<TreeNode*> stack;
 
     void print(std::ostream& out, TreeNode* node);
     
 public:
+    virtual bool is_full();
+
     virtual bool find(Key key);
     virtual bool insert(Key key, Value val);
 
@@ -35,10 +38,19 @@ public:
     virtual void go_next(); //чтобы найти следующий наименьший
     virtual bool is_end();
 
+    virtual Key get_curr_key();
+    virtual Value get_curr_val();
+
     //сериализация дерева
     //рекурсивный метод, печатаем корень, затем его потомков
     void serialize(std::ostream& out);
 };
+
+template <typename Key, typename Value>
+inline bool TreeTable<Key, Value>::is_full()
+{
+    return false;
+}
 
 template <typename Key, typename Value>
 inline bool TreeTable<Key, Value>::find(Key key)
@@ -204,6 +216,19 @@ template <typename Key, typename Value>
 inline bool TreeTable<Key, Value>::is_end()
 {
     return this->el_count == pos;
+}
+
+template <typename Key, typename Value>
+inline Key TreeTable<Key, Value>::get_curr_key()
+{
+    return curr->rec.key;   
+}    
+
+
+template <typename Key, typename Value>
+inline Value TreeTable<Key, Value>::get_curr_val()
+{
+    return curr->rec.val;
 }
 
 template <typename Key, typename Value>
