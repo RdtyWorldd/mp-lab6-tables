@@ -114,6 +114,7 @@ inline bool AVLTreeTable<Key, Value>::insert(Key key, Value val)
         return false;
     }
     insert_rec(root, key, val);
+    this->el_count++;
     return true;
 }
 
@@ -211,7 +212,7 @@ inline int AVLTreeTable<Key, Value>::right_balance(Node *&node, bool insert)
                 res = HEIGHT::H_DEC;
                 break;
             case RIGHT: //rr балансировка
-                if(node->right->balance == BALANCE::RIGHT)
+                if(node->right->balance != BALANCE::LEFT)
                     res = rr_shift(node, insert);
                 else //rl балансировка
                     res = rl_shift(node, insert);
@@ -505,29 +506,36 @@ inline int AVLTreeTable<Key, Value>::remove_min(Node*& node)
 template <typename Key, typename Value>
 inline void AVLTreeTable<Key, Value>::reset()
 {
+    pos = 0;
+    if(root == nullptr) return;
     curr = root;
     while (!stack.empty()) stack.pop();
     //stack.clear();
-    while(curr != nullptr)
+    while(curr->left != nullptr)
     {
         stack.push(curr);
         curr = curr->left;
     }
-    pos = 0;
+    stack.push(curr);
 }
 
 template <typename Key, typename Value>
 inline void AVLTreeTable<Key, Value>::go_next()
 {
-    if (stack.empty()) return;
-    // Взять верхний узел
-    Node* node = stack.top();
+    curr = curr->right;
     stack.pop();
-    // Если у него есть правый сын, опуститься в него и дальше влево
-    node = node->right;
-    while (node) {
-      stack.push(node);
-      node = node->left;
+    if(curr)
+    {
+        while(curr->left != nullptr)
+        {
+            stack.push(curr);
+            curr = curr->left;
+        }
+        stack.push(curr);
+    }
+    else if(stack.empty() == false)
+    {
+        curr = stack.top();
     }
     pos++;
 }

@@ -180,29 +180,36 @@ inline void TreeTable<Key, Value>::del(Key key)
 template <typename Key, typename Value>
 inline void TreeTable<Key, Value>::reset()
 {
+    pos = 0;
+    if(root == nullptr) return;
     curr = root;
     while (!stack.empty()) stack.pop();
     //stack.clear();
-    while(curr != nullptr)
+    while(curr->left != nullptr)
     {
         stack.push(curr);
         curr = curr->left;
     }
-    pos = 0;
+    stack.push(curr);
 }
 
 template <typename Key, typename Value>
 inline void TreeTable<Key, Value>::go_next()
 {
-    if (stack.empty()) return;
-    // Взять верхний узел
-    TreeNode<TKey, TValue>* node = stack.top();
+    curr = curr->right;
     stack.pop();
-    // Если у него есть правый сын, опуститься в него и дальше влево
-    node = node->pRight;
-    while (node) {
-      stack.push(node);
-      node = node->pLeft;
+    if(curr)
+    {
+        while(curr->left != nullptr)
+        {
+            stack.push(curr);
+            curr = curr->left;
+        }
+        stack.push(curr);
+    }
+    else if(stack.empty() == false)
+    {
+        curr = stack.top();
     }
     pos++;
 }
