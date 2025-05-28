@@ -101,7 +101,7 @@ inline bool TreeTable<Key, Value>::insert(Key key, Value val)
     {
         curr->right = node;
     }
-    
+    return true;
 }
 
 // тесты должны рассмотреть все три случая
@@ -125,11 +125,11 @@ inline void TreeTable<Key, Value>::del(Key key)
         {
             if(prev->right == curr)
             {
-                prev->right == curr->left;
+                prev->right = curr->left;
             }
             else
             {
-                prev->left == curr->left;
+                prev->left = curr->left;
             }
         }
     }
@@ -143,11 +143,11 @@ inline void TreeTable<Key, Value>::del(Key key)
         {
             if(prev->right == curr)
             {
-                prev->right == curr->right;
+                prev->right = curr->right;
             }
             else
             {
-                prev->left == curr->right;
+                prev->left = curr->right;
             }
         }
     }
@@ -161,8 +161,8 @@ inline void TreeTable<Key, Value>::del(Key key)
             pN = pN->right;
             (this->eff)++;
         }
-        curr->key = pN->key;
-        curr->val = pN->val;
+        curr->rec.key = pN->rec.key;
+        curr->rec.val = pN->rec.val;
         if(prev == curr) // не сделано ни одного шага нужно поставить
         {
             curr->left = pN->left;
@@ -181,33 +181,28 @@ template <typename Key, typename Value>
 inline void TreeTable<Key, Value>::reset()
 {
     curr = root;
-    stack.clear();
-    while(curr->left != nullptr)
+    while (!stack.empty()) stack.pop();
+    //stack.clear();
+    while(curr != nullptr)
     {
         stack.push(curr);
         curr = curr->left;
     }
-    stack.push(curr);
     pos = 0;
 }
 
 template <typename Key, typename Value>
 inline void TreeTable<Key, Value>::go_next()
 {
-    curr = curr->right;
+    if (stack.empty()) return;
+    // Взять верхний узел
+    TreeNode<TKey, TValue>* node = stack.top();
     stack.pop();
-    if(curr == nullptr && !stack.empty())
-    {
-        curr = stack.top();
-    }
-    else
-    {
-        while(curr->left != nullptr)
-        {
-            stack.push(curr);
-            curr = curr->left;
-        }
-        stack.push(curr);
+    // Если у него есть правый сын, опуститься в него и дальше влево
+    node = node->pRight;
+    while (node) {
+      stack.push(node);
+      node = node->pLeft;
     }
     pos++;
 }
@@ -215,7 +210,7 @@ inline void TreeTable<Key, Value>::go_next()
 template <typename Key, typename Value>
 inline bool TreeTable<Key, Value>::is_end()
 {
-    return this->el_count == pos;
+    return pos == this->el_count;
 }
 
 template <typename Key, typename Value>
@@ -248,11 +243,11 @@ inline void TreeTable<Key, Value>::print(std::ostream &out, TreeNode *node)
 
     for(int i =0; i< level; i++)
     {
-        os << " ";
+        out << " ";
     }
-    os << node->key << endl;
+    out << node->rec.key << std::endl;
     level++;
-    printf(out, node->right);
-    printf(out, node->left);
+    print(out, node->right);
+    print(out, node->left);
     level--;
 }
