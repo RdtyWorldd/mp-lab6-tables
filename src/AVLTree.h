@@ -50,9 +50,11 @@ protected:
     std::stack<Node*> stack;
 
     void print(std::ostream& out, Node* node);
+
+    void remove_tree(Node* node);
 public:
     AVLTreeTable();
-
+    ~AVLTreeTable();
     virtual bool is_full() { return false; };
 
     //алгоритмы рекурсивные
@@ -73,9 +75,15 @@ public:
 };
 
 template<typename Key, typename Value>
-inline AVLTreeTable<Key, Value>::AVLTreeTable()
+inline AVLTreeTable<Key, Value>::AVLTreeTable(): stack()
 {
     root = nullptr;
+}
+
+template<typename Key, typename Value>
+inline AVLTreeTable<Key, Value>::~AVLTreeTable()
+{
+    remove_tree(root);
 }
 
 template<typename Key, typename Value>
@@ -583,4 +591,16 @@ inline void AVLTreeTable<Key, Value>::print(std::ostream &out, Node *node)
     print(out, node->right);
     print(out, node->left);
     level--;
+}
+
+template <typename Key, typename Value>
+inline void AVLTreeTable<Key, Value>::remove_tree(Node *node)
+{
+    if(node)
+    {
+        remove_tree(node->right);
+        remove_tree(node->left);
+        delete node;
+    }
+
 }

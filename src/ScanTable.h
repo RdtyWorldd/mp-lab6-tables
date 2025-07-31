@@ -16,6 +16,7 @@ public:
     virtual bool find(Key key); 
     virtual bool insert(Key key, Value value);
     virtual void del(Key key);
+
 };
 
 template <typename Key, typename Value>

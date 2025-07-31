@@ -30,6 +30,14 @@ public:
 
     Key get_curr_key();
     Value get_curr_val();
+    void serialize(std::ostream& os) 
+    {
+      for (this->reset(); !this->is_end(); this->go_next())
+      {
+        
+        os << this->get_curr_key() << " " << this->get_curr_val() << std::endl;
+      }
+    }
 };
 
 template <typename Key, typename Value>

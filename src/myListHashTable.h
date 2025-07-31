@@ -43,12 +43,12 @@ template <typename Key, typename Value>
 inline ListHashTable<Key, Value>::ListHashTable(const ListHashTable &table): HashTable<Key, Value>(table.size)
 {
     this->pRec = new List<Record> [this->size];
-    this->el_count = table.el_count;
     for(int i =0; i < this->size; i++)
     {
         //copy  i list object from table to this
         this->pRec[i] = table.pRec[i];
     }
+    this->el_count = table.el_count;
 }
 
 template <typename Key, typename Value>
@@ -158,7 +158,6 @@ inline void ListHashTable<Key, Value>::go_next()
         iter_list = pRec + curr_list;
         iter_list->Reset();
     }
-
 }
 
 template <typename Key, typename Value>

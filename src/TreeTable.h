@@ -22,7 +22,10 @@ class TreeTable : public Table<Key, Value>
 
     void print(std::ostream& out, TreeNode* node);
     
+    void remove_tree(TreeNode* node);
 public:
+    TreeTable();
+    ~TreeTable();
     virtual bool is_full();
 
     virtual bool find(Key key);
@@ -45,6 +48,18 @@ public:
     //рекурсивный метод, печатаем корень, затем его потомков
     void serialize(std::ostream& out);
 };
+
+template <typename Key, typename Value>
+inline TreeTable<Key, Value>::TreeTable(): stack()
+{
+    root = nullptr;
+}
+
+template <typename Key, typename Value>
+inline TreeTable<Key, Value>::~TreeTable()
+{
+    remove_tree(root);
+}
 
 template <typename Key, typename Value>
 inline bool TreeTable<Key, Value>::is_full()
@@ -113,7 +128,6 @@ inline void TreeTable<Key, Value>::del(Key key)
     {
         return;
     }
-    
     TreeNode* del_node = curr;
     if(curr->right == nullptr) //один потомок слева у найденного элемента
     {
@@ -191,6 +205,7 @@ inline void TreeTable<Key, Value>::reset()
         curr = curr->left;
     }
     stack.push(curr);
+    
 }
 
 template <typename Key, typename Value>
@@ -257,4 +272,15 @@ inline void TreeTable<Key, Value>::print(std::ostream &out, TreeNode *node)
     print(out, node->right);
     print(out, node->left);
     level--;
+}
+
+template <typename Key, typename Value>
+inline void TreeTable<Key, Value>::remove_tree(TreeNode *node)
+{
+    if(node)
+    {
+        remove_tree(node->right);
+        remove_tree(node->left);
+        delete node;
+    }
 }

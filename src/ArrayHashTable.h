@@ -32,8 +32,8 @@ template <typename Key, typename Value>
 inline ArrayHashTable<Key, Value>::ArrayHashTable(int _size, int _step) : HashTable<Key, Value>(_size)
 {
     step = _step;
-    free_rec = {-1, 0};
-    del_rec = {-2, 0};
+    free_rec.key = -1;
+    del_rec.key = -2;
     pRec = new Record[this->size];
     for(int i = 0; i < this->size;i++)
         pRec[i] = free_rec;
@@ -54,6 +54,7 @@ inline bool ArrayHashTable<Key, Value>::find(Key key)
     
     for(int i = 0; i < this->size; i++)
     {
+        (this->eff)++;
         if(pRec[curr].key == free_rec.key)
             break;
         else if(pRec[curr].key == del_rec.key && tmp == -1)
@@ -76,7 +77,7 @@ inline bool ArrayHashTable<Key, Value>::find(Key key)
 template <typename Key, typename Value>
 inline bool ArrayHashTable<Key, Value>::insert(Key key, Value val)
 {
-    if(!find(key) && !is_full)
+    if(!find(key) && !is_full())
     {
         this->el_count++;
         pRec[curr] = {key, val};
