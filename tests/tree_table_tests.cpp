@@ -2,7 +2,7 @@
 #include "TreeTable.h"
 #include <sstream>
 #include <vector>
-
+#include <iostream>
 class TreeTableTest : public ::testing::Test {
 protected:
     void SetUp() override {
@@ -174,4 +174,16 @@ TEST_F(TreeTableTest, SequentialDeletion) {
 
     EXPECT_TRUE(table->is_empty());
     EXPECT_EQ(table->get_el_count(), 0);
+}
+
+// Тест с последовательным удалением всех элементов
+TEST_F(TreeTableTest, SequentialInsert) {
+
+    for(int i = 0; i < 100; i ++)
+    {
+        table->insert(i, std::to_string(i));
+    }
+    std::cout << table->get_eff();
+    EXPECT_TRUE(table->get_eff() >= 4000);
+    EXPECT_EQ(table->get_el_count(), 100);
 }

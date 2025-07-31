@@ -2,6 +2,7 @@
 #include "AVLTree.h"
 #include <vector>
 #include <sstream>
+#include <iostream>
 
 class AVLTreeTableTest : public ::testing::Test {
 protected:
@@ -223,4 +224,15 @@ TEST_F(AVLTreeTableTest, ComplexBalanceCases) {
     }
     
     EXPECT_EQ(actual_order, expected_order);
+}
+
+TEST_F(AVLTreeTableTest, SequentialInsert) {
+
+    for(int i = 0; i < 100; i ++)
+    {
+        table->insert(i, std::to_string(i));
+    }
+    std::cout << table->get_eff();
+    EXPECT_TRUE(table->get_eff()/100.0 >= 5 && table->get_eff()/100.0 <= 8);
+    EXPECT_EQ(table->get_el_count(), 100);
 }

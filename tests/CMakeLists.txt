@@ -13,6 +13,8 @@ enable_testing()
 add_executable(${target} scan_table_test.cpp sort_table_test.cpp 
                 array_hash_table_tests.cpp 
                 list_hash_table_tests.cpp
+                tree_table_tests.cpp
+                avl_tree_tests.cpp
               )
 target_link_libraries(${target} GTest::gtest_main)
 
